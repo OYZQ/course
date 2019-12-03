@@ -1,0 +1,261 @@
+<odoo>
+  <data>
+<!-- tree视图 -->
+    <!-- 课程视图 -->
+    <record model="ir.ui.view" id="course_tree_view">
+        <field name="name">course.tree</field>
+        <field name="model">course.course</field>
+        <field name="arch" type="xml">
+            <tree string="Course Tree">
+                <field name="name"/>
+                <field name="description"/>
+                <field name="responsible_id"/>
+            </tree>
+        </field>
+    </record>
+    <!-- 学生信息视图 -->
+    <record id="view_ml_employee_tree" model="ir.ui.view">
+        <field name="name">人员信息列表</field>
+        <field name="model">course.employee</field>
+        <field name="arch" type="xml">
+            <tree string="学生信息">
+                <field name="name"/>
+                <field name="gender"/>
+                <field name="status"/>
+                <field name="country_id"/>
+                <field name="mobile_phone"/>
+                <field name="work_email"/>
+            </tree>
+        </field>
+    </record>
+    <!-- 老师信息视图 -->
+    <record id="view_ml_teacher_tree" model="ir.ui.view">
+        <field name="name">老师信息列表</field>
+        <field name="model">course.teacher</field>
+        <field name="arch" type="xml">
+            <tree string="学生信息">
+                <field name="name"/>
+                <field name="gender"/>
+                <field name="status"/>
+                <field name="country_id"/>
+                <field name="mobile_phone"/>
+                <field name="work_email"/>
+            </tree>
+        </field>
+    </record>
+    <!-- 主任信息视图 -->
+    <record id="view_ml_director_tree" model="ir.ui.view">
+        <field name="name">主任信息列表</field>
+        <field name="model">course.director</field>
+        <field name="arch" type="xml">
+            <tree string="学生信息">
+                <field name="name"/>
+                <field name="gender"/>
+                <field name="status"/>
+                <field name="country_id"/>
+                <field name="mobile_phone"/>
+                <field name="work_email"/>
+            </tree>
+        </field>
+    </record>
+    <!-- 请假视图 -->
+    <record id="view_tree_test_test" model="ir.ui.view">
+      <field name="name">请假单列表</field>
+      <field name="model">test.test</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="days"/>
+          <field name="startdate"/>
+          <field name="enddate"/>
+        </tree>
+      </field>
+    </record>
+
+<!-- form视图 -->
+    <!-- 课程form -->
+    <record model="ir.ui.view" id="course_form_view">
+        <field name="name">course.form</field>
+        <field name="model">course.course</field>
+        <field name="arch" type="xml">
+            <form string="Course Form">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="description"/>
+                        <field name="responsible_id"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <!-- 学生form -->
+    <record id="view_ml_employee_form" model="ir.ui.view">
+        <field name="name">人员信息表单</field>
+        <field name="model">course.employee</field>
+        <field name="arch" type="xml">
+            <form string="学生信息">
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name" placeholder="员工姓名" required="True"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="基本信息">
+                            <field name="gender" required="True"/>
+                            <field name="country_id"/>
+                            <field name="birthday"/>
+                            <field name="status"/>
+                        </group>
+                        <group string="工作信息">
+                            <field name="address"/>
+                            <field name="mobile_phone" widget="phone"/>
+                            <field name="work_email" widget="email"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <!-- 老师form -->
+    <record id="view_ml_teacher_form" model="ir.ui.view">
+        <field name="name">老师信息表单</field>
+        <field name="model">course.teacher</field>
+        <field name="arch" type="xml">
+            <form string="老师信息">
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name" placeholder="员工姓名" required="True"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="基本信息">
+                            <field name="gender" required="True"/>
+                            <field name="country_id"/>
+                            <field name="birthday"/>
+                            <field name="status"/>
+                        </group>
+                        <group string="工作信息">
+                            <field name="address"/>
+                            <field name="mobile_phone" widget="phone"/>
+                            <field name="work_email" widget="email"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <!-- 主任form -->
+    <record id="view_ml_teacher_form" model="ir.ui.view">
+        <field name="name">主任信息表单</field>
+        <field name="model">course.director</field>
+        <field name="arch" type="xml">
+            <form string="主任信息">
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name" placeholder="员工姓名" required="True"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="基本信息">
+                            <field name="gender" required="True"/>
+                            <field name="country_id"/>
+                            <field name="birthday"/>
+                            <field name="status"/>
+                        </group>
+                        <group string="工作信息">
+                            <field name="address"/>
+                            <field name="mobile_phone" widget="phone"/>
+                            <field name="work_email" widget="email"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <!-- 请假 -->
+    <record id="view_form_test_test" model="ir.ui.view">
+      <field name="name">学生请假单</field>
+      <field name="model">test.test</field>
+      <field name="arch" type="xml">
+        <form>
+          <sheet>
+            <group name="group_top" string="员工请假单">
+              <field name="name"/>
+              <field name="days"/>
+              <field name="startdate"/>
+              <field name="enddate"/>
+              <field name="reason"/>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <!-- 视图动作 -->
+    <act_window id="action_course_course"
+                   name="课程列表"
+                   res_model="course.course"
+                   view_mode="tree,form" />
+
+    <act_window id="action_test_test"
+               name="员工请假单"
+               res_model="test.test"
+               view_mode="tree,form" />
+
+    <record model="ir.actions.act_window" id="view_ml_employee_action">
+        <field name="name">学生信息</field>
+        <field name="res_model">course.employee</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_ml_employee_tree"/>
+    </record>
+    <record model="ir.actions.act_window" id="view_ml_teacher_action">
+        <field name="name">老师信息</field>
+        <field name="res_model">course.teacher</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_ml_teacher_tree"/>
+    </record>
+    <record model="ir.actions.act_window" id="view_ml_director_action">
+        <field name="name">主任信息</field>
+        <field name="res_model">course.director</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_ml_director_tree"/>
+    </record>
+
+    <!-- 顶级菜单 -->
+    <menuitem name="课程系统" id="menu_course"/>
+
+    <!-- 二级菜单 -->
+    <menuitem name="课程" id="menu_course_course" parent="menu_course" action="action_course_course" sequence="10"/>
+    <menuitem name="人员" id="menu_employee_info" parent="menu_course" sequence="20"/>
+<!--    <menuitem name="请假单" id="menu_test_test" parent="menu_course" action="action_test_test" sequence="30"/>-->
+
+    <!-- 三级菜单 -->
+    <menuitem name="学生" id="menu_employee_student" parent="menu_employee_info" sequence="10"/>
+    <menuitem name="老师" id="menu_employee_teacher" parent="menu_employee_info" sequence="20"/>
+    <menuitem name="教导主任" id="menu_employee_director" parent="menu_employee_info" sequence="30"/>
+
+<!-- 四级菜单 -->
+    <!-- 学生 -->
+    <menuitem name="信息" id="menu_student_info" parent="menu_employee_student" action="view_ml_employee_action" sequence="10"/>
+    <menuitem name="请假" id="menu_student_leave" parent="menu_employee_student" action="action_test_test" sequence="20"/>
+    <menuitem name="选课" id="menu_student_choice" parent="menu_employee_student" action="action_test_test" sequence="30"/>
+    <!-- 老师 -->
+    <menuitem name="信息" id="menu_teacher_infos" parent="menu_employee_teacher" action="view_ml_teacher_action" sequence="10"/>
+    <menuitem name="审批" id="menu_teacher_correct" parent="menu_employee_teacher" action="action_test_test" sequence="20"/>
+    <!-- 主任 -->
+    <menuitem name="信息" id="menu_director_infos" parent="menu_employee_director" action="view_ml_director_action" sequence="10"/>
+    <menuitem name="审批" id="menu_director_correct" parent="menu_employee_director" action="action_test_test" sequence="20"/>
+    <menuitem name="配置" id="menu_director_deploy" parent="menu_employee_director" action="action_test_test" sequence="20"/>
+
+  </data>
+</odoo>
