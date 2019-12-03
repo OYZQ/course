@@ -9,7 +9,6 @@
                     <group>
                         <field name="name"/>
                         <field name="description"/>
-                        <field name="responsible_id"/>
                     </group>
                 </sheet>
             </form>
@@ -23,7 +22,6 @@
             <tree string="Course Tree">
                 <field name="name"/>
                 <field name="description"/>
-                <field name="responsible_id"/>
             </tree>
         </field>
     </record>
@@ -60,7 +58,7 @@
                     <group string="课程设置">
                         <field name="start_date"/>
                         <field name="num"/>
-                        <field name="seats"/>
+                        <field name="seats" readonly="1"/>
                         <field name="taken_seats" widget="progressbar"/>
                     </group>
                     <label for="attendee_ids"/>

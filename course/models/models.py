@@ -14,6 +14,8 @@ STATUS = [
     ('STUDENT', u'学生')
 ]
 
+NUM = 5
+
 class Course(models.Model):
     _name = 'course.course'
 
@@ -55,25 +57,34 @@ class Director(models.Model):
     birthday = fields.Date(string=u'生日')
 
 class test(models.Model):
-    _name = 'test.test'
-    name = fields.Char(string="申请人")
-    days = fields.Integer(string="天数")
-    startdate = fields.Date(string="开始日期")
-    enddate = fields.Date(string="截至日期")
-    reason = fields.Text(string="请假事由")
+    _name = 'course.test'
+    name = fields.Many2one('course.employee', string=u"申请人", required=True)
+    subject = fields.Many2one('course.zcourse', string=u"课程", required=True)
+    days = fields.Integer(string=u"天数")
+    startdate = fields.Date(string=u"开始日期")
+    enddate = fields.Date(string=u"截至日期")
+    reason = fields.Text(string=u"请假事由")
+    tstate = fields.Selection(
+                [('O', '通过'),
+                ('l', '不通过'),
+                ('2', '未审核')],
+                u'老师意见', default='2')
+    dstate = fields.Selection(
+                [('O', '通过'),
+                ('l', '不通过'),
+                ('2', '未审核')],
+                u'主任意见', default='2')
 
 class Session(models.Model):
     _name = 'course.session'
-
     start_date = fields.Date(string="开始时间", default=fields.Date.today)
-    # duration = fields.Float(string="持续时间", digits=(6, 2), help="Duration in days")
-    seats = fields.Integer(string="座位数量")
+    seats = fields.Integer(string="容纳人数", default=10)
     active = fields.Boolean(default=True)
     color = fields.Integer()  # Kanban视图color字段声明
     instructor_id = fields.Many2one('course.director', string="教导主任", required=True)
     course_id = fields.Many2one('course.zcourse', ondelete='cascade', string="课程名", required=True)
     name = fields.Many2one('course.teacher', string="任课老师", required=True)
-    attendee_ids = fields.Many2many('res.partner', string="上课学生")
+    attendee_ids = fields.Many2many('course.employee', string="上课学生")
     num = fields.Integer(string="课程节数", required=True)
     # Graph视图字段声明
     attendees_count = fields.Integer(string="出席人数", compute='_get_attendees_count', store=True)
@@ -97,27 +108,43 @@ class Session(models.Model):
     # 日历
     end_date = fields.Date(string="截至时间", store=True, compute='_get_end_date', inverse='_set_end_date')
 
+    # 课程节数约束
+    @api.onchange('num')
+    def _taken_num(self):
+        if self.num < 1:
+            return {
+                'warning': {
+                    'title': "课程节数太少",
+                    'message': "课程节数必须大于0",
+                },
+            }
+
     # 座位约束
     @api.onchange('seats', 'attendee_ids')
     def _verify_valid_seats(self):
         if self.seats < 0:
             return {
                 'warning': {
-                    'title': _("Incorrect 'seats' value"),
-                    'message': _("The number of available seats may not be negative"),
+                    'title': "座位数字不对",
+                    'message': "可用座位数必须大于人",
                 },
             }
         if self.seats < len(self.attendee_ids):
             return {
                 'warning': {
-                    'title': _("Too many attendees"),
-                    'message': _("Increase seats or remove excess attendees"),
+                    'title': "参加学生太多太多",
+                    'message': "建议你增加座位或取消多余的与会者",
                 },
             }
 
 class Zcourse(models.Model):
     _name = 'course.zcourse'
-
     name = fields.Char(string="课程名", required=True)
     description = fields.Text(u"课程介绍")
-    responsible_id = fields.Many2one('res.users', ondelete='set null', string=u"任课老师", index=True)
+
+class Choice(models.Model):
+    _name = 'course.choice'
+    surplus = fields.Integer(string="剩余数量")
+    className = fields.Many2one('course.zcourse', ondelete='cascade', string="已选课程", required=True)
+    studentName = fields.Many2one('course.zcourse', ondelete='cascade', string="学生姓名", required=True)
+    info = fields.One2many('course.session', 'name', string=u'相关信息')

@@ -58,16 +58,32 @@
             </tree>
         </field>
     </record>
+    <!-- 选课视图 -->
+    <record id="view_ml_choice_tree" model="ir.ui.view">
+        <field name="name">选课列表</field>
+        <field name="model">course.choice</field>
+        <field name="arch" type="xml">
+            <tree string="选课信息">
+                <field name="className"/>
+                <field name="studentName"/>
+                <field name="surplus"/>
+                <field name="info"/>
+            </tree>
+        </field>
+    </record>
     <!-- 请假视图 -->
-    <record id="view_tree_test_test" model="ir.ui.view">
+    <record id="view_tree_course_test" model="ir.ui.view">
       <field name="name">请假单列表</field>
-      <field name="model">test.test</field>
+      <field name="model">course.test</field>
       <field name="arch" type="xml">
         <tree>
-          <field name="name"/>
-          <field name="days"/>
-          <field name="startdate"/>
-          <field name="enddate"/>
+            <field name="name"/>
+            <field name="subject"/>
+            <field name="days"/>
+            <field name="startdate"/>
+            <field name="enddate"/>
+            <field name="tstate"/>
+            <field name="dstate"/>
         </tree>
       </field>
     </record>
@@ -99,7 +115,7 @@
                     <div class="oe_title">
                         <label for="name" class="oe_edit_only"/>
                         <h1>
-                            <field name="name" placeholder="员工姓名" required="True"/>
+                            <field name="name" placeholder="姓名" required="True"/>
                         </h1>
                     </div>
                     <group>
@@ -129,7 +145,7 @@
                     <div class="oe_title">
                         <label for="name" class="oe_edit_only"/>
                         <h1>
-                            <field name="name" placeholder="员工姓名" required="True"/>
+                            <field name="name" placeholder="姓名" required="True"/>
                         </h1>
                     </div>
                     <group>
@@ -159,7 +175,7 @@
                     <div class="oe_title">
                         <label for="name" class="oe_edit_only"/>
                         <h1>
-                            <field name="name" placeholder="员工姓名" required="True"/>
+                            <field name="name" placeholder="姓名" required="True"/>
                         </h1>
                     </div>
                     <group>
@@ -180,18 +196,39 @@
         </field>
     </record>
     <!-- 请假 -->
-    <record id="view_form_test_test" model="ir.ui.view">
+    <record id="view_form_course_test" model="ir.ui.view">
       <field name="name">学生请假单</field>
-      <field name="model">test.test</field>
+      <field name="model">course.test</field>
       <field name="arch" type="xml">
         <form>
           <sheet>
-            <group name="group_top" string="员工请假单">
+            <group name="group_top" string="学生请假单">
               <field name="name"/>
+              <field name="subject"/>
               <field name="days"/>
               <field name="startdate"/>
               <field name="enddate"/>
               <field name="reason"/>
+              <field name="tstate"/>
+              <field name="dstate"/>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <!-- 选课form -->
+    <record id="view_form_course_choice" model="ir.ui.view">
+      <field name="name">选课列表</field>
+      <field name="model">course.choice</field>
+      <field name="arch" type="xml">
+        <form>
+          <sheet>
+            <group name="group_top" string="选课列表">
+              <field name="className"/>
+              <field name="studentName"/>
+              <field name="surplus"/>
+              <field name="info"/>
             </group>
           </sheet>
         </form>
@@ -202,11 +239,16 @@
     <act_window id="action_course_course"
                    name="课程列表"
                    res_model="course.course"
-                   view_mode="tree,form" />
+                   view_mode="tree,form"/>
 
-    <act_window id="action_test_test"
-               name="员工请假单"
-               res_model="test.test"
+    <act_window id="action_course_test"
+               name="学生请假单"
+               res_model="course.test"
+               view_mode="tree,form" />
+
+    <act_window id="action_course_choice"
+               name="选课列表"
+               res_model="course.choice"
                view_mode="tree,form" />
 
     <record model="ir.actions.act_window" id="view_ml_employee_action">
@@ -237,7 +279,6 @@
     <!-- 二级菜单 -->
     <menuitem name="课程" id="menu_course_course" parent="menu_course" action="action_course_course" sequence="10"/>
     <menuitem name="人员" id="menu_employee_info" parent="menu_course" sequence="20"/>
-<!--    <menuitem name="请假单" id="menu_test_test" parent="menu_course" action="action_test_test" sequence="30"/>-->
 
     <!-- 三级菜单 -->
     <menuitem name="学生" id="menu_employee_student" parent="menu_employee_info" sequence="10"/>
@@ -247,15 +288,15 @@
 <!-- 四级菜单 -->
     <!-- 学生 -->
     <menuitem name="信息" id="menu_student_info" parent="menu_employee_student" action="view_ml_employee_action" sequence="10"/>
-    <menuitem name="请假" id="menu_student_leave" parent="menu_employee_student" action="action_test_test" sequence="20"/>
-    <menuitem name="选课" id="menu_student_choice" parent="menu_employee_student" action="action_test_test" sequence="30"/>
+    <menuitem name="请假" id="menu_student_leave" parent="menu_employee_student" action="action_course_test" sequence="20"/>
+    <menuitem name="选课" id="menu_student_choice" parent="menu_employee_student" action="action_course_choice" sequence="30"/>
     <!-- 老师 -->
     <menuitem name="信息" id="menu_teacher_infos" parent="menu_employee_teacher" action="view_ml_teacher_action" sequence="10"/>
-    <menuitem name="审批" id="menu_teacher_correct" parent="menu_employee_teacher" action="action_test_test" sequence="20"/>
+    <menuitem name="审批" id="menu_teacher_correct" parent="menu_employee_teacher" action="action_course_test" sequence="20"/>
     <!-- 主任 -->
     <menuitem name="信息" id="menu_director_infos" parent="menu_employee_director" action="view_ml_director_action" sequence="10"/>
-    <menuitem name="审批" id="menu_director_correct" parent="menu_employee_director" action="action_test_test" sequence="20"/>
-    <menuitem name="配置" id="menu_director_deploy" parent="menu_employee_director" action="action_test_test" sequence="20"/>
+    <menuitem name="审批" id="menu_director_correct" parent="menu_employee_director" action="action_course_test" sequence="20"/>
+    <menuitem name="配置" id="menu_director_deploy" parent="menu_employee_director" sequence="20"/>
 
   </data>
 </odoo>
