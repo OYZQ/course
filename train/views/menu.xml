@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<odoo>
+    <menuitem id="menu_train" name="培训" />
+    <!--这是最大的那个标题-->
+    <menuitem id="menu_person_management" name="人员管理" parent="menu_train" sequence="0"/>
+    <!--最大分组，parent表明其隶属于哪个菜单，sequence是优先级，越低越优先，0是最优先的-->
+    <menuitem id="menu_info_management" name="信息管理" parent="menu_train" sequence="1"/>
+    <menuitem id="menu_cooperate_management" name="合作管理" parent="menu_train" sequence="2"/>
+
+
+</odoo>

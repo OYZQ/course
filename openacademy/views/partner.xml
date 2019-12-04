@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!--    Contacts创建时表单视图-->
+    <record model="ir.ui.view" id="partner_instructor_form_view">
+        <field name="name">partner.instructor</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <notebook position="inside">
+                <page string="Sessions">
+                    <group>
+                        <field name="instructor"/>
+                        <field name="session_ids"/>
+                    </group>
+                </page>
+            </notebook>
+        </field>
+    </record>
+
+    <!--    定义Contacts右侧窗口动作-->
+    <record model="ir.actions.act_window" id="contact_list_action">
+        <field name="name">Contacts</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <!--子菜单Configuration-->
+    <menuitem id="configuration_menu" name="Configuration" parent="main_openacademy_menu"/>
+    <!--Configuration下的子菜单Contacts-->
+    <menuitem id="contact_menu" name="Contacts" parent="configuration_menu" action="contact_list_action"/>
+
+<!--定义子菜单Contact Tags窗口动作-->
+    <record model="ir.actions.act_window" id="contact_cat_list_action">
+        <field name="name">Contact Tags</field>
+        <field name="res_model">res.partner.category</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <!--右侧列表显示Teacher/ Level 1-->
+    <record model="res.partner.category" id="teacher1">
+        <field name="name">Teacher / Level 1</field>
+    </record>
+<!--列表显示Teacher/ Level 2-->
+    <record model="res.partner.category" id="teacher2">
+        <field name="name">Teacher / Level 2</field>
+    </record>
+
+<!--configuration下的子菜单Contact Tags-->
+    <menuitem id="contact_cat_menu" name="Contact Tags" parent="configuration_menu" action="contact_cat_list_action"/>
+
+</odoo>

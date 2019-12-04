@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="view_form_person_mes" model="ir.ui.view">
+        <!--给视图表单一个id-->
+        <field name="name">person_mes Form</field>
+        <!--给视图表单命名-->
+        <field name="model">person.mes</field>
+        <!--绑定模型-->
+         <field name="arch" type="xml">
+              <form string="person_mes">
+                 <header>
+                      <button string="提交" name="button_submit" states="edit" type="object" class="oe_highlight" groups="train.train_group_manager"/>
+                     <button string="通过" name="button_pass" states="check" type="object" class="oe_highlight" groups="train.train_group_manager"/>
+                     <button string="退回" name="button_fail" states="check" type="object" class="oe_highlight" groups="train.train_group_manager"/>
+                       <!-- 右上角 进度显示-->
+                       <field name="state" widget="statusbar" statusbar_visible="edit,check,pass,fail"/>
+                 </header>
+                  <sheet>
+                    <!--在表格中填入字段信息-->
+                    <h4 style="color: #7C7BAD;">基本信息</h4>
+                    <group name="group_top">
+                        <!--最大分组-->
+
+                        <group name="group_left">
+                            <field name="person_id" />
+                            <field name="image" widget="image" class="oe_avatar oe_left" />
+                            <field name="description" />
+                            <field name="department" widget="radio" />
+                            <field name="salary_month"  />
+                            <!--左侧-->
+                        </group>
+                        <group name="group_right">
+                            <field name="name" />
+                            <field name="person_recommend" />
+                            <field name="earn_money" />
+                            <field name="register_date" />
+                            <field name="Iscollege" />
+                            <field name="work_month"  />
+                            <!--widget="selection"下拉-->
+                            <!--右侧-->
+                        </group>
+                        <h4 style="color: #7C7BAD;">目前累计薪水</h4>
+                            <field name="salary_total" />
+                        <h4 style="color: #7C7BAD;">自我介绍</h4>
+                            <field name="self_intro" />
+                        <!--绑定模型中的字段-->
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <!--以上代码为录入信息栏提供数据绑定服务-->
+    <record id="view_tree_person_mes" model="ir.ui.view">
+        <field name="name">person_mes List</field>
+        <field name="model">person.mes</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="person_id" />
+                <field name="name" />
+                <field name="person_recommend" />
+                <field name="register_date" />
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+    <!--以上代码为外侧信息查询栏提供数据绑定服务-->
+
+    <record model="ir.actions.act_window" id="person_mes_list_action">
+        <field name="name">人员列表</field>
+        <field name="res_model">person.mes</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_person_mes"
+          name="人员信息录入"
+          action="person_mes_list_action"
+          parent="menu_info_management" />
+</odoo>

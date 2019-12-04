@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--一级菜单-->
+        <menuitem
+                id="menu_employee_root"
+                name="员工"
+                web_icon="hr,static/description/icon.png"
+                sequence="1"/>
+        <!--二级菜单 -->
+        <menuitem
+                id="menu_employee_info"
+                name="员工信息"
+                parent="menu_employee_root"
+                sequence="1"/>
+        <!--三级菜单 -->
+        <menuitem
+                id="menu_view_ml_employee_tree"
+                name="员工档案"
+                action="view_ml_employee_action"
+                parent="menu_employee_info"
+                sequence="1"/>
+    </data>
+</odoo>

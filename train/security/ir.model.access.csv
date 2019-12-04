@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_train_user,普通用户,model_person_mes,train_group_user,1,1,1,1
+access_train_manager,管理员,model_person_mes,train_group_manager,1,1,1,1
+access_train_manager,管理员,model_company_mes,train_group_manager,1,1,1,1

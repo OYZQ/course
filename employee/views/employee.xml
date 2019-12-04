@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_ml_employee_tree" model="ir.ui.view">
+            <field name="name">员工信息列表</field>
+            <field name="model">ml.employee</field>
+            <field name="arch" type="xml">
+                <tree string="员工信息">
+                    <field name="name"/>
+                    <field name="company_id"/>
+                    <field name="gender"/>
+                    <field name="country_id"/>
+                    <field name="mobile_phone"/>
+                    <field name="work_email"/>
+                    <field name="leader_id"/>
+                </tree>
+            </field>
+        </record>
+        <record id="view_ml_employee_form" model="ir.ui.view">
+            <field name="name">员工信息表单</field>
+            <field name="model">ml.employee</field>
+            <field name="arch" type="xml">
+                <form string="员工信息">
+                    <sheet>
+                        <field name="image" widget='image' class="oe_avatar"
+                               options='{"preview_image":"image_medium"}'/>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only"/>
+                            <h1>
+                                <field name="name" placeholder="员工姓名" required="True"/>
+                            </h1>
+                        </div>
+                        <notebook>
+                            <page string="员工信息">
+                                <group>
+                                    <group string="基本信息">
+                                        <field name="gender" required="True"/>
+                                        <field name="country_id"/>
+                                        <field name="birthday"/>
+                                        <field name="marital"/>
+                                    </group>
+                                    <group string="工作信息">
+                                        <field name="company_id" options="{'no_open': True, 'no_create': True}"/>
+<!--                                        <field name="company_id" options="{'no_open': True, 'no_create': True}" groups="base.group_multi_company"/>-->
+                                        <field name="address"/>
+                                        <field name="mobile_phone" widget="phone"/>
+                                        <field name="work_email" widget="email"/>
+                                        <field name="leader_id" options="{'no_open': True, 'no_create': True}"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="下属信息">
+                                <field name="subordinate_ids">
+                                    <tree editable="bottom">
+                                        <field name="name" attrs="{'required': True}"/>
+                                        <field name="gender" required="True"/>
+                                        <field name="country_id"/>
+                                        <field name="mobile_phone"/>
+                                        <field name="work_email"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="view_ml_employee_filter" model="ir.ui.view">
+            <field name="name">员工搜索视图</field>
+            <field name="model">ml.employee</field>
+            <field name="arch" type="xml">
+                <search string="员工">
+                    <!--用于搜索的字段-->
+                    <field name="name" string="员工"
+                           filter_domain="['|',('work_email','ilike',self),('name','ilike',self)]"/>
+                    <field name="gender" string="性别"/>
+                    <separator/>
+                    <!--定义好的过滤器-->
+                    <filter string="男员工" name="gender_male"
+                            domain="[('gender', '=', 'male')]"/>
+                    <filter string="女员工" name="gender_female"
+                            domain="[('gender', '=', 'female')]"/>
+                    <separator/>
+                    <!--分组-->
+                    <group expand="0" string="分组">
+                        <filter name="group_leader" string="领导" domain="[]" context="{'group_by':'leader_id'}"/>
+                        <filter name="group_company" string="Company" domain="[]" context="{'group_by':'company_id'}"
+                                groups="base.group_multi_company"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="view_ml_employee_action">
+            <field name="name">员工信息</field>
+            <field name="res_model">ml.employee</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_ml_employee_tree"/>
+            <field name="search_view_id" ref="view_ml_employee_filter"/>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,127 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="view_form_company_mes" model="ir.ui.view">
+        <!--给视图表单一个id-->
+        <field name="name">company_mes Form</field>
+        <!--给视图表单命名-->
+        <field name="model">company.mes</field>
+        <!--绑定模型-->
+         <field name="arch" type="xml">
+              <form string="company_mes">
+                  <sheet>
+                    <!--在表格中填入字段信息-->
+                    <h4 style="color: #7C7BAD;">公司信息</h4>
+                    <group name="group_top">
+                        <!--最大分组-->
+                        <group name="group_left">
+                            <field name="name" />
+                            <field name="logo" widget="image" class="oe_avatar oe_left" />
+                            <field name="person_in_charge" />
+                            <!--左侧-->
+                        </group>
+                        <group name="group_right">
+                            <field name="phone_number" />
+                            <field name="website"/>
+                            <field name="priority" />
+                            <!--右侧-->
+                        </group>
+                        <h4 style="color: #7C7BAD;">公司简介</h4>
+                            <field name="intro" />
+                        <!--绑定模型中的字段-->
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_tree_company_mes" model="ir.ui.view">
+        <field name="name">company_mes List</field>
+        <field name="model">company.mes</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+                <field name="phone_number" />
+                <field name="website" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="company_mes_kanban" model="ir.ui.view">
+        <field name="model">company.mes</field>
+        <field name="arch" type="xml">
+            <kanban class="o_modules_kanban" default_group_by="priority" default_order="priority">
+                <field name="priority"/>
+                <field name="color"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <!-- HTML Qweb template -->
+                        <div t-attf-class="oe_kanban_color_#{kanban_getcolor(record.color.raw_value)}">
+                        <!--oe_kanban_global_click">-->
+                            <div class="o_dropdown_kanban dropdown">
+                                <a class="dropdown-toggle btn"
+                                   data-toggle="dropdown" role="button"
+                                   aria-label="Dropdown menu" title="Dropdown menu"
+                                   href="#" >
+                                    <span class="fa fa-ellipsis-v" />
+                                </a>
+                                <div class="dropdown-menu" role="menu">
+                                    <t t-if="widget.editable">
+                                        <a role="menuitem" type="edit" class="dropdown-item">编辑</a>
+                                    </t>
+                                    <t t-if="widget.deletable">
+                                        <a role="menuitem" type="delete" class="dropdown-item">删除</a>
+                                    </t>
+                                    <ul class="oe_kanban_colorpicker" data-field="color" />
+                                </div>
+                            </div>
+                            <div class="oe_kanban_body">
+                                <!--内容元素和字段-->
+                                <div style="font-size: 20px;">
+                                    <strong>
+                                        <a type="open"><field name="name" /></a>
+                                    </strong>
+                                </div>
+                                <ul>
+                                    <li t-if="record.phone_number.raw_value != ''">
+                                        联系方式：
+                                        <field name="phone_number"/>
+                                    </li>
+                                    <li t-if="record.website.raw_value != ''" t-attf-class="oe_kanban_text_{{record.priority.raw_value lt '2' ? 'black':'red'}}">
+                                        公司网站：
+                                        <field name="website"/>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="o_kanban_record_bottom">
+                                <!--底部元素可继续分层-->
+                                <div class="oe_kanban_bottom_left">
+                                    <!--左区域-->
+                                    合作等级：
+                                    <field name="priority" widget="priority" />
+                                </div>
+                                <div class="oe_kanban_bottom_right">
+                                    <!--右区域-->
+                                    <field name="logo" widget="image" options="{'size':[24,24]}" />
+                                </div>
+                            </div>
+                            <div class="oe_clear"/>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="company_mes_list_action">
+        <field name="name">公司看板</field>
+        <field name="res_model">company.mes</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">kanban,tree,form</field>
+    </record>
+
+    <menuitem id="menu_company_mes"
+              name="公司信息录入"
+              parent="menu_cooperate_management"
+              action="company_mes_list_action"
+    />
+</odoo>
