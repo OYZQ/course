@@ -65,16 +65,16 @@
         <field name="arch" type="xml">
             <tree string="选课信息">
                 <field name="className"/>
-                <field name="studentName"/>
+                <field name="name"/>
                 <field name="surplus"/>
                 <field name="info"/>
             </tree>
         </field>
     </record>
     <!-- 请假视图 -->
-    <record id="view_tree_course_test" model="ir.ui.view">
+    <record id="view_tree_course_leave" model="ir.ui.view">
       <field name="name">请假单列表</field>
-      <field name="model">course.test</field>
+      <field name="model">course.leave</field>
       <field name="arch" type="xml">
         <tree>
             <field name="name"/>
@@ -196,9 +196,9 @@
         </field>
     </record>
     <!-- 请假 -->
-    <record id="view_form_course_test" model="ir.ui.view">
+    <record id="view_form_course_leave" model="ir.ui.view">
       <field name="name">学生请假单</field>
-      <field name="model">course.test</field>
+      <field name="model">course.leave</field>
       <field name="arch" type="xml">
         <form>
           <sheet>
@@ -226,7 +226,7 @@
           <sheet>
             <group name="group_top" string="选课列表">
               <field name="className"/>
-              <field name="studentName"/>
+              <field name="name"/>
               <field name="surplus"/>
               <field name="info"/>
             </group>
@@ -241,9 +241,9 @@
                    res_model="course.course"
                    view_mode="tree,form"/>
 
-    <act_window id="action_course_test"
+    <act_window id="action_course_leave"
                name="学生请假单"
-               res_model="course.test"
+               res_model="course.leave"
                view_mode="tree,form" />
 
     <act_window id="action_course_choice"
@@ -277,26 +277,28 @@
     <menuitem name="课程系统" id="menu_course"/>
 
     <!-- 二级菜单 -->
-    <menuitem name="课程" id="menu_course_course" parent="menu_course" action="action_course_course" sequence="10"/>
-    <menuitem name="人员" id="menu_employee_info" parent="menu_course" sequence="20"/>
+    <menuitem name="课程" id="menu_course_course" parent="menu_course" action="action_course_course" sequence="20"/>
+    <menuitem name="人员" id="menu_employee_info" parent="menu_course" sequence="10"/>
 
     <!-- 三级菜单 -->
-    <menuitem name="学生" id="menu_employee_student" parent="menu_employee_info" sequence="10"/>
-    <menuitem name="老师" id="menu_employee_teacher" parent="menu_employee_info" sequence="20"/>
-    <menuitem name="教导主任" id="menu_employee_director" parent="menu_employee_info" sequence="30"/>
+    <menuitem name="学生" id="menu_employee_student" parent="menu_employee_info" sequence="10" groups="course.group_course_user"/>
+    <menuitem name="老师" id="menu_employee_teacher" parent="menu_employee_info" sequence="20" groups="course.group_course_teacher"/>
+    <menuitem name="教导主任" id="menu_employee_director" parent="menu_employee_info" sequence="30" groups="course.group_course_manager"/>
 
 <!-- 四级菜单 -->
     <!-- 学生 -->
-    <menuitem name="信息" id="menu_student_info" parent="menu_employee_student" action="view_ml_employee_action" sequence="10"/>
-    <menuitem name="请假" id="menu_student_leave" parent="menu_employee_student" action="action_course_test" sequence="20"/>
-    <menuitem name="选课" id="menu_student_choice" parent="menu_employee_student" action="action_course_choice" sequence="30"/>
+    <menuitem name="个人信息" id="menu_student_info" parent="menu_employee_student" action="view_ml_employee_action" sequence="10"/>
+    <menuitem name="在线请假" id="menu_student_leave" parent="menu_employee_student" action="action_course_leave" sequence="20"/>
+    <menuitem name="选课系统" id="menu_student_choice" parent="menu_employee_student" action="action_course_choice" sequence="30"/>
     <!-- 老师 -->
-    <menuitem name="信息" id="menu_teacher_infos" parent="menu_employee_teacher" action="view_ml_teacher_action" sequence="10"/>
-    <menuitem name="审批" id="menu_teacher_correct" parent="menu_employee_teacher" action="action_course_test" sequence="20"/>
+    <menuitem name="学生信息" id="menu_teacher_infots" parent="menu_employee_teacher" action="view_ml_employee_action" sequence="10"/>
+    <menuitem name="个人信息" id="menu_teacher_infotm" parent="menu_employee_teacher" action="view_ml_teacher_action" sequence="20"/>
+    <menuitem name="假条审批" id="menu_teacher_correct" parent="menu_employee_teacher" action="action_course_leave" sequence="30"/>
     <!-- 主任 -->
-    <menuitem name="信息" id="menu_director_infos" parent="menu_employee_director" action="view_ml_director_action" sequence="10"/>
-    <menuitem name="审批" id="menu_director_correct" parent="menu_employee_director" action="action_course_test" sequence="20"/>
-    <menuitem name="配置" id="menu_director_deploy" parent="menu_employee_director" sequence="20"/>
-
+    <menuitem name="学生信息" id="menu_director_infods" parent="menu_employee_director" action="view_ml_employee_action" sequence="10"/>
+    <menuitem name="老师信息" id="menu_director_infodt" parent="menu_employee_director" action="view_ml_teacher_action" sequence="20"/>
+    <menuitem name="个人信息" id="menu_director_infodm" parent="menu_employee_director" action="view_ml_director_action" sequence="30"/>
+    <menuitem name="假条审批" id="menu_director_correct" parent="menu_employee_director" action="action_course_leave" sequence="40"/>
+    <menuitem name="课程设置" id="menu_director_deploy" parent="menu_employee_director"  action="session_list_action" sequence="50"/>
   </data>
 </odoo>

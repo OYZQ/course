@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <!-- 配置所有用户都只能对自己的任务进行增删改查 -->
+        <record id="rule_course_leave" model="ir.rule">
+            <field name="name">课程系统 - 用户 - 请假</field>
+            <!-- model_id：要应用该规则的模型的外部 ID -->
+            <field name="model_id" ref="model_course_leave"/>
+            <!-- domain_force：过滤条件，符合该条件的记录都将按照所定义权限进行检查，其中变量 user 表示当前用户的实例对象，可以直接使用 -->
+            <field name="domain_force">[('create_uid', '=', user.id)]</field>
+            <!-- groups：应用该规则的用户组，如果不指定则默认对全部用户应用该规则 -->
+            <field name="groups" eval="[(4, ref('course.group_course_user'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+        <record id="rule_course_leave_teacher" model="ir.rule">
+            <field name="name">课程系统 - 老师 - 批假</field>
+            <!-- model_id：要应用该规则的模型的外部 ID -->
+            <field name="model_id" ref="model_course_leave"/>
+            <!-- groups：应用该规则的用户组，如果不指定则默认对全部用户应用该规则 -->
+            <field name="groups" eval="[(4, ref('course.group_course_teacher'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+        <record id="rule_course_leave_teacher" model="ir.rule">
+            <field name="name">课程系统 - 主任 - 批假</field>
+            <!-- model_id：要应用该规则的模型的外部 ID -->
+            <field name="model_id" ref="model_course_leave"/>
+            <!-- groups：应用该规则的用户组，如果不指定则默认对全部用户应用该规则 -->
+            <field name="groups" eval="[(4, ref('course.group_course_manager'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+        <record id="rule_course_choice" model="ir.rule">
+            <field name="name">课程系统 - 用户 - 选课</field>
+            <!-- model_id：要应用该规则的模型的外部 ID -->
+            <field name="model_id" ref="model_course_choice"/>
+            <!-- domain_force：过滤条件，符合该条件的记录都将按照所定义权限进行检查，其中变量 user 表示当前用户的实例对象，可以直接使用 -->
+            <field name="domain_force">[('create_uid', '=', user.id)]</field>
+            <!-- groups：应用该规则的用户组，如果不指定则默认对全部用户应用该规则 -->
+            <field name="groups" eval="[(4, ref('course.group_course_user'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+        <record id="rule_course_employee" model="ir.rule">
+            <field name="name">课程系统 - 用户 - 个人信息</field>
+            <!-- model_id：要应用该规则的模型的外部 ID -->
+            <field name="model_id" ref="model_course_employee"/>
+            <!-- groups：应用该规则的用户组，如果不指定则默认对全部用户应用该规则 -->
+            <field name="groups" eval="[(4, ref('course.group_course_user'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+        <record id="rule_course_employee" model="ir.rule">
+            <field name="name">课程系统 - 老师 - 学生信息</field>
+            <!-- model_id：要应用该规则的模型的外部 ID -->
+            <field name="model_id" ref="model_course_employee"/>
+            <!-- groups：应用该规则的用户组，如果不指定则默认对全部用户应用该规则 -->
+            <field name="groups" eval="[(4, ref('course.group_course_teacher'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+        <record id="rule_course_employee" model="ir.rule">
+            <field name="name">课程系统 - 主任 - 学生信息</field>
+            <!-- model_id：要应用该规则的模型的外部 ID -->
+            <field name="model_id" ref="model_course_employee"/>
+            <!-- groups：应用该规则的用户组，如果不指定则默认对全部用户应用该规则 -->
+            <field name="groups" eval="[(4, ref('course.group_course_manager'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+    </data>
+</odoo>

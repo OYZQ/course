@@ -39,7 +39,7 @@
 
 
     <!--主任-配置下子菜单-->
-    <menuitem id="courses_menu" name="添加课程" parent="menu_director_deploy" action="course_list_action"/>
+<!--    <menuitem id="courses_menu" name="添加课程" parent="menu_director_deploy" action="course_list_action"/>-->
 
 
     <!-- 创建session表单视图显示-->
@@ -164,5 +164,5 @@
         <field name="view_mode">tree,form,calendar,graph,kanban</field>
     </record>
     <!--主任-配置下-->
-    <menuitem id="session_menu" name="课程设置" parent="menu_director_deploy" action="session_list_action"/>
+<!--    <menuitem id="session_menu" name="课程设置" parent="menu_director_deploy" action="session_list_action"/>-->
 </odoo>

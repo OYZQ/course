@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+        <!--主菜单定义-->
+        <menuitem id="menu_todo" name="Todo"/>
+        <!-- 二级菜单 -->
+        <menuitem id="menu_todo_submenu" parent="menu_todo" name="分类/待办事项"/>
+
+        <!--窗口动作-->
+        <!--菜单动作定义-->
+        <!-- 打开 待办事项列表 动作 -->
+        <record id="action_todo_task" model="ir.actions.act_window">
+            <field name="name">待办事项</field>
+            <field name="res_model">todo.task</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="target">current</field>
+        </record>
+        <!-- 打开 分类列表 动作 -->
+        <record id="action_todo_category" model="ir.actions.act_window">
+            <field name="name">分类</field>
+            <field name="res_model">todo.category</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="target">current</field>
+        </record>
+
+        <!--三级子菜单定义-->
+        <!-- 待办事项菜单，点击则调用 action_todo_task动作 打开分类菜单 -->
+        <menuitem action="action_todo_task" id="submenu_todo_task" name="待办事项" parent="menu_todo_submenu"
+                  sequence="10"/>
+        <!-- 分类菜单，点击则调用 action_todo_category动作 打开分类菜单 -->
+        <menuitem action="action_todo_category" id="submenu_todo_category" name="分类" parent="menu_todo_submenu"
+                  sequence="8"/>
+        <!--设置让普通用户无法看见分类按钮，因为普通用户不能操作分类-->
+        <!--<menuitem action="action_todo_category" id="submenu_todo_category" name="分类" parent="menu_todo_submenu" sequence="8" groups="todo.group_todo_manager"/>-->
+    </data>
+</odoo>
+
+
+
+

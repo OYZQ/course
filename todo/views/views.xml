@@ -1,0 +1,113 @@
+<odoo>
+    <data>
+        <!-- 在 待办事项列表 页面 进行配置显示内容 -->
+        <record id="todo_task_view_tree" model="ir.ui.view">
+            <field name="name">todo.task.view_tree</field>
+            <field name="model">todo.task</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Todo" decoration-danger="is_expired">
+                    <!-- 配置显示内容，分别为 任务名称，是否完成，截止日期，是否过期 -->
+                    <field name="name"/>
+                    <field name="is_done"/>
+                    <!--<field name="priority"/>-->
+                    <field name="deadline"/>
+                    <field name="is_expired" invisible="True"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- 在 分类列表 页面 进行配置显示内容 -->
+        <record id="todo_category_view_tree" model="ir.ui.view">
+            <field name="name">todo.category.view_tree</field>
+            <field name="model">todo.category</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Todo Category" editable="bottom">
+                    <field name="name"/>
+                    <field name="count"/>
+                </tree>
+            </field>
+        </record>
+
+        <!--配置创建分类时的页面排版-->
+        <record id="todo_category_view_form" model="ir.ui.view">
+            <field name="name">todo.category.view_form</field>
+            <field name="model">todo.category</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Todo Category">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                            </group>
+                            <group>
+                                <field name="count" readonly="True"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!--对创建待办事项进行排版-->
+        <record id="todo_task_view_form" model="ir.ui.view">
+            <field name="name">todo.task.view_form</field>
+            <field name="model">todo.task</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Todo">
+                    <sheet>
+                        <group>
+                            <!-- 这里一个group就是一列 -->
+                            <!--这一列的内容一次是 描述，分类，已完成-->
+                            <group name="group_left">
+                                <field name="name"/>
+                                <field name="category_id"/>
+                                <field name="is_done"/>
+                            </group>
+                            <group name="group_right">
+                                <field name="priority"/>
+                                <field name="deadline"/>
+                                <field name="is_expired" readonly="True"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!--用于待办事项的搜索功能-->
+        <record id="todo_task_view_filter" model="ir.ui.view">
+            <field name="name">todo.task.view_filter</field>
+            <field name="model">todo.task</field>
+            <field name="arch" type="xml">
+                <search string="Todo">
+                    <field name="name"/>
+                    <field name="category_id"/>
+                    <separator/>
+                    <filter string="未完成" name="undone" domain="[('is_done', '=', False)]"/>
+                    <filter string="已完成" name="done" domain="[('is_done', '=', True)]"/>
+                    <separator/>
+                    <filter string="待办" name="todo" domain="[('priority', '=', 'todo')]"/>
+                    <filter string="普通" name="normal" domain="[('priority', '=', 'normal')]"/>
+                    <filter string="紧急" name="urgency" domain="[('priority', '=', 'urgency')]"/>
+                    <!--<group expand="0" string="分组">-->
+                        <!--<filter string="分类" domain="[]" context="{'group_by':'category_id'}"/>-->
+                        <!--<filter string="紧急程度" domain="[]" context="{'group_by':'priority'}"/>-->
+                    <!--</group>-->
+                </search>
+            </field>
+        </record>
+
+       <!--服务器动作-->
+        <record id="action_mark_todo_task_done" model="ir.actions.server">
+            <field name="name">标记完成</field>
+            <field name="model_id" ref="model_todo_task"/>
+            <field name="binding_model_id" ref="model_todo_task"/>
+            <field name="state">code</field>
+            <field name="code">records.write({'is_done': True})</field>
+        </record>
+    </data>
+</odoo>

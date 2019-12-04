@@ -56,8 +56,8 @@ class Director(models.Model):
     country_id = fields.Many2one('res.country', string=u'国籍')
     birthday = fields.Date(string=u'生日')
 
-class test(models.Model):
-    _name = 'course.test'
+class leave(models.Model):
+    _name = 'course.leave'
     name = fields.Many2one('course.employee', string=u"申请人", required=True)
     subject = fields.Many2one('course.zcourse', string=u"课程", required=True)
     days = fields.Integer(string=u"天数")
@@ -85,7 +85,7 @@ class Session(models.Model):
     course_id = fields.Many2one('course.zcourse', ondelete='cascade', string="课程名", required=True)
     name = fields.Many2one('course.teacher', string="任课老师", required=True)
     attendee_ids = fields.Many2many('course.employee', string="上课学生")
-    num = fields.Integer(string="课程节数", required=True)
+    num = fields.Integer(string="课程节数", required=True, default=2)
     # Graph视图字段声明
     attendees_count = fields.Integer(string="出席人数", compute='_get_attendees_count', store=True)
 
@@ -144,7 +144,8 @@ class Zcourse(models.Model):
 
 class Choice(models.Model):
     _name = 'course.choice'
-    surplus = fields.Integer(string="剩余数量")
-    className = fields.Many2one('course.zcourse', ondelete='cascade', string="已选课程", required=True)
-    studentName = fields.Many2one('course.zcourse', ondelete='cascade', string="学生姓名", required=True)
+    surplus = fields.Integer(string=u"剩余数量")
+    className = fields.Many2one('course.zcourse', ondelete='cascade', string=u"已选课程", required=True)
+    # studentName = fields.Many2one('course.employee', ondelete='cascade', string=u"学生姓名", required=True)
+    name = fields.Many2one('course.employee', string=u"学生姓名", required=True)
     info = fields.One2many('course.session', 'name', string=u'相关信息')
