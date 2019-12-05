@@ -1,23 +1,78 @@
 <odoo>
     <data>
-        <!-- 在 待办事项列表 页面 进行配置显示内容 -->
         <record id="todo_task_view_tree" model="ir.ui.view">
             <field name="name">todo.task.view_tree</field>
             <field name="model">todo.task</field>
             <field name="type">tree</field>
             <field name="arch" type="xml">
-                <tree string="Todo" decoration-danger="is_expired">
-                    <!-- 配置显示内容，分别为 任务名称，是否完成，截止日期，是否过期 -->
+                <tree string="Todo" decoration-danger="is_expired" import="false">
+                    <field name="category_id"/>
                     <field name="name"/>
-                    <field name="is_done"/>
-                    <!--<field name="priority"/>-->
+                    <field name="coordinator_id"/>
+                    <field name="executor_id"/>
+                    <field name="priority"/>
                     <field name="deadline"/>
+                    <field name="request_state"/>
+                    <field name="task_state"/>
+                    <field name="activate" invisible="True"/>
                     <field name="is_expired" invisible="True"/>
                 </tree>
             </field>
         </record>
 
-        <!-- 在 分类列表 页面 进行配置显示内容 -->
+        <record id="todo_task_view_form" model="ir.ui.view">
+            <field name="name">todo.task.view_form</field>
+            <field name="model">todo.task</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Todo">
+                    <header>
+                        <button name="action_permitted" attrs="{'invisible':['|',('permit_state','!=','nopermit'),('request_permit','!=',True)]}" type="object" string="审核通过" confirm="确认通过审核？" groups="todo.group_todo_coordinator,todo.group_todo_manager"/>
+                        <button name="action_refuse" attrs="{'invisible':['|',('permit_state','!=','nopermit'),('permit_state','!=','permitted'),('request_permit','!=',True)]}" type="object" string="驳回申请" groups="todo.group_todo_coordinator,todo.group_todo_manager"/>
+                        <field name="permit_state" widget="statusbar" statubar_visible="refuse,nopermit,permitted" attrs="{'invisible':[('request_permit','!=',True)]}" class="oe_right" groups="todo.group_todo_coordinator,todo.group_todo_manager"/>
+
+                        <button name="action_review" attrs="{'invisible':[('request_state','!=','submit')]}" type="object" string="提交完成" confirm="确认提交？" groups="todo.group_todo_employee"/>
+                        <button name="action_submit" attrs="{'invisible':[('request_state','!=','review')]}" type="object" string="取消提交" groups="todo.group_todo_employee"/>
+                        <field name="request_state" widget="statusbar" statubar_visible="submit,review,permit" class="oe_right" groups="todo.group_todo_employee"/>
+
+                        <button name="action_arrange" attrs="{'invisible':['|',('task_state','!=','draft'),('request_state','=','review')]}" type="object" string="提交安排" groups="todo.group_todo_coordinator,todo.group_todo_manager"/>
+                        <button name="action_draft" attrs="{'invisible':['|',('task_state','!=','arrange'),('request_state','=','review')]}" type="object" string="撤回安排" groups="todo.group_todo_coordinator,todo.group_todo_manager"/>
+                        <field name="task_state" widget="statusbar" statubar_visible="draft,arrange,done,cancel" class="oe_right" attrs="{'invisible':[('request_permit','=',True)]}" groups="todo.group_todo_coordinator,todo.group_todo_manager"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group colspan="2">
+                                <field name="name" attrs="{'readonly':[('activate','=',True)]}"/>
+                            </group>
+                            <group>
+                                <field name="coordinator_id" options="{'no_create_edit': 1}" attrs="{'readonly':[('activate','=',True)]}"/>
+                                <field name="executor_id" options="{'no_create_edit': 1}" attrs="{'readonly':[('activate','=',True)]}"/>
+                            </group>
+                            <group>
+                                <field name="category_id" attrs="{'readonly':[('activate','=',True)]}"/>
+                                <field name="priority" attrs="{'readonly':[('activate','=',True)]}"/>
+                                <field name="deadline" attrs="{'readonly':[('activate','=',True)]}"/>
+                                <field name="activate" invisible="True"/>
+                                <field name="request_permit" invisible="True"/>
+                                <field name="get_permit" invisible="True"/>
+                            </group>
+                        </group>
+                        <notebook colspan="4">
+                            <page string="详细内容" autofocus="autofocus">
+                                <field name="content" attrs="{'readonly':[('activate','=',True)]}"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <sheet position="after">
+                        <div class="oe_chatter">
+                            <field name="message_follower_ids" widget="mail_followers"/>
+                            <field name="message_ids" widget="mail_thread"/>
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
         <record id="todo_category_view_tree" model="ir.ui.view">
             <field name="name">todo.category.view_tree</field>
             <field name="model">todo.category</field>
@@ -26,11 +81,11 @@
                 <tree string="Todo Category" editable="bottom">
                     <field name="name"/>
                     <field name="count"/>
+                    <field name="parent_id"/>
                 </tree>
             </field>
         </record>
 
-        <!--配置创建分类时的页面排版-->
         <record id="todo_category_view_form" model="ir.ui.view">
             <field name="name">todo.category.view_form</field>
             <field name="model">todo.category</field>
@@ -42,72 +97,56 @@
                             <group>
                                 <field name="name"/>
                             </group>
-                            <group>
-                                <field name="count" readonly="True"/>
-                            </group>
                         </group>
                     </sheet>
                 </form>
             </field>
         </record>
 
-        <!--对创建待办事项进行排版-->
-        <record id="todo_task_view_form" model="ir.ui.view">
-            <field name="name">todo.task.view_form</field>
-            <field name="model">todo.task</field>
-            <field name="type">form</field>
+        <record model="ir.ui.view" id="todo_security_view_tree">
+            <field name="name">todo.security</field>
+            <field name="inherit_id" ref="base.view_server_action_tree"/>
+            <field name="model">ir.actions.server</field>
             <field name="arch" type="xml">
-                <form string="Todo">
-                    <sheet>
-                        <group>
-                            <!-- 这里一个group就是一列 -->
-                            <!--这一列的内容一次是 描述，分类，已完成-->
-                            <group name="group_left">
-                                <field name="name"/>
-                                <field name="category_id"/>
-                                <field name="is_done"/>
-                            </group>
-                            <group name="group_right">
-                                <field name="priority"/>
-                                <field name="deadline"/>
-                                <field name="is_expired" readonly="True"/>
-                            </group>
-                        </group>
-                    </sheet>
-                </form>
+                <xpath expr="//field[@name='sequence']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='state']" position="replace">
+                    <field name="groups_id" widget="many2many_tags" domain="[('category_id','=',61)]"/>
+                </xpath>
+                <xpath expr="//field[@name='model_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='usage']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
             </field>
         </record>
 
-        <!--用于待办事项的搜索功能-->
-        <record id="todo_task_view_filter" model="ir.ui.view">
-            <field name="name">todo.task.view_filter</field>
-            <field name="model">todo.task</field>
+        <record model="ir.ui.view" id="view_server_action_form_groups">
+            <field name="name">ir.actions.server.group</field>
+            <field name="inherit_id" ref="base.view_server_action_form"/>
+            <field name="model">ir.actions.server</field>
             <field name="arch" type="xml">
-                <search string="Todo">
-                    <field name="name"/>
-                    <field name="category_id"/>
-                    <separator/>
-                    <filter string="未完成" name="undone" domain="[('is_done', '=', False)]"/>
-                    <filter string="已完成" name="done" domain="[('is_done', '=', True)]"/>
-                    <separator/>
-                    <filter string="待办" name="todo" domain="[('priority', '=', 'todo')]"/>
-                    <filter string="普通" name="normal" domain="[('priority', '=', 'normal')]"/>
-                    <filter string="紧急" name="urgency" domain="[('priority', '=', 'urgency')]"/>
-                    <!--<group expand="0" string="分组">-->
-                        <!--<filter string="分类" domain="[]" context="{'group_by':'category_id'}"/>-->
-                        <!--<filter string="紧急程度" domain="[]" context="{'group_by':'priority'}"/>-->
-                    <!--</group>-->
-                </search>
+                <xpath expr="//notebook" position="inside">
+                    <page string="Security" name="security">
+                        <field name="groups_id" widget="many2many_tags" domain="[('category_id','=',61)]"/>
+                    </page>
+                </xpath>
             </field>
         </record>
 
-       <!--服务器动作-->
-        <record id="action_mark_todo_task_done" model="ir.actions.server">
-            <field name="name">标记完成</field>
-            <field name="model_id" ref="model_todo_task"/>
-            <field name="binding_model_id" ref="model_todo_task"/>
-            <field name="state">code</field>
-            <field name="code">records.write({'is_done': True})</field>
+        <record model="ir.ui.view" id="todo_rule_view_list">
+            <field name="name">todo.rule.view_tree</field>
+            <field name="model">res.groups</field>
+            <field name="arch" type="xml">
+                <tree string="Todo rule" editable="bottom" delete="false">
+                    <field name="full_name"/>
+                    <field name="users" widget="many2many_tags"/>
+                </tree>
+            </field>
         </record>
+
+
     </data>
 </odoo>

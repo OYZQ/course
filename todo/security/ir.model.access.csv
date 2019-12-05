@@ -1,6 +1,9 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_todo_task,todo.task,model_todo_task,,1,0,0,0
-access_todo_category,todo.category,model_todo_category,,1,0,0,0
 access_todo_task_user,todo.task.user,model_todo_task,group_todo_user,1,1,1,1
-access_todo_category_user,todo.category.user,model_todo_category,group_todo_user,1,1,1,1
+access_todo_task_employee,todo.task.employee,model_todo_task,group_todo_employee,1,1,0,0
+access_todo_task_coordinator,todo.task.coordinator,model_todo_task,group_todo_coordinator,1,1,0,0
+access_todo_category_user,todo.category.user,model_todo_category,group_todo_user,1,0,0,0
+access_todo_category_employee,todo.category.employee,model_todo_category,group_todo_employee,1,0,0,0
 access_todo_category_manager,todo.category.manager,model_todo_category,group_todo_manager,1,1,1,1
+access_todo_category_coordinator,todo.category.coordinator,model_todo_category,group_todo_coordinator,1,1,0,0
+access_todo_task_report,access_todo_task_report,model_todo_task_report,group_todo_manager,1,0,0,0

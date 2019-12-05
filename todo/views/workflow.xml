@@ -1,0 +1,44 @@
+<odoo>
+    <data>
+        <record id="activity_draft" model="workflow.activity">
+            <field name="name">草稿</field>
+            <field name="wkf_id" ref="model_todo_task"/>
+            <field name="kind">dummy</field>
+            <field name="flow_start">True</field>
+        </record>
+        <record id="activity_review" model="workflow.activity">
+            <field name="name">安排</field>
+            <field name="wkf_id" ref="model_todo_task"/>
+            <field name="kind">function</field>
+            <field name="action">action_arrange()</field>
+        </record>
+        <record id="activity_done" model="workflow.activity">
+            <field name="name">完成</field>
+            <field name="wkf_id" ref="model_todo_task"/>
+            <field name="kind">function</field>
+            <field name="action">action_done()</field>
+        </record>
+        <record id="activity_cancel" model="workflow.activity">
+            <field name="name">关闭</field>
+            <field name="wkf_id" ref="model_todo_task"/>
+            <field name="kind">function</field>
+            <field name="action">action_cancel()</field>
+        </record>
+
+        <record id="transition_draft2arrange" model="workflow.transition">
+          <field name="act_from" ref="activity_draft" />
+          <field name="act_to" ref="activity_arrange" />
+          <field name="signal">button_arrange</field>
+        </record>
+        <record id="transition_arrange2done" model="workflow.transition">
+          <field name="act_from" ref="activity_arrange" />
+          <field name="act_to" ref="activity_done" />
+          <field name="signal">button_done</field>
+        </record>
+        <record id="transition_done2cancel" model="workflow.transition">
+          <field name="act_from" ref="activity_done" />
+          <field name="act_to" ref="activity_cancel" />
+          <field name="signal">button_cancel</field>
+        </record>
+    </data>
+</odoo>

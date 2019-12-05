@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="report_todo_task_sql">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+
+                    <table class="table table-striped">
+                        <tr>
+                            <th>安排人</th>
+                            <th>执行人</th>
+                            <th>开始日期</th>
+                            <th>截止日期</th>
+                        </tr>
+                        <t t-foreach="docs" t-as="o">
+                            <tr>
+                                <td class="col-xs-6">
+                                    <span t-field="o.creator_id" />
+                                    <t t-esc="docs"/>
+                                </td>
+                                <td class="col-xs-6">
+                                    <span t-field="o.executor_id" />
+                                </td>
+                                <td class="col-xs-6">
+                                    <span t-field="o.create_date" t-options="{'widget':'date'}" />
+                                </td>
+                                <td class="col-xs-6">
+                                    <span t-field="o.deadline" t-options="{'widget':'date'}" />
+                                </td>
+                            </tr>
+                        </t>
+                    </table>
+                    <div class="row">
+                        <div class="col-2">
+                            待办数量：<t t-esc="len(docs)"/>
+                        </div>
+                        <div class="col-2">
+                            超期数量：<t t-esc="sum(x.count_expired for x in docs)" />
+                        </div>
+                        <div class="col-3"/>
+                        <div class="col-3"/>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+    <template id="report_todo_task_template">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+
+                    <!-- Report header content -->
+                    <div class="container">
+                        <div class="row bg-primary">
+                            <div class="col-2">安排人</div>
+                            <div class="col-2">执行人</div>
+                            <div class="col-4">开始日期</div>
+                            <div class="col-4">截止日期</div>
+                        </div>
+                    </div>
+                    <t t-foreach="docs" t-as="o">
+                        <!-- Report row content -->
+                        <div class="row" style="margin:5px;">
+                            <div class="col-2">
+                                <span t-field="o.creator_id"/>
+                            </div>
+                            <div class="col-2">
+                                <span t-field="o.executor_id"/>
+                            </div>
+                            <div class="col-4">
+                                <span t-field="o.create_date"/>
+                            </div>
+                            <div class="col-4">
+                                <span t-field="o.deadline"/>
+                            </div>
+                        </div>
+                    </t>
+
+                    <!-- Report footer content -->
+                    <div class="row">
+                        <div class="col-2">
+                            <b>待办数量：<t t-esc="len(docs)"/></b>
+                        </div>
+                        <div class="col-2">
+                            <b>超期数量：<t t-esc="sum(x.count_expired for x in docs)" /></b>
+                        </div>
+                        <div class="col-4"/>
+                        <div class="col-4"/>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

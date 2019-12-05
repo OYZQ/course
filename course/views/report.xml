@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+  <report id="action_course_report"
+    string="学生请假状况"
+    model="course.leave"
+    report_type="qweb-html"
+    name="course.leave_report"/>
+  <template id="report_course_leave_template">
+    <t t-call="report.html_container">
+      <div class="page">
+          hello
+      </div>
+    </t>
+  </template>
+</odoo>

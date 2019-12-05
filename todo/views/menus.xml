@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <menuitem id="menu_todo" name="Todo"/>
+        <menuitem id="menu_todo_submenu" parent="menu_todo" name="待办事项"/>
+
+        <record id="action_todo_task" model="ir.actions.act_window">
+            <field name="name">我的代办</field>
+            <field name="res_model">todo.task</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain"></field>
+            <field name="target">current</field>
+        </record>
+
+        <record id="action_todo_category" model="ir.actions.act_window">
+            <field name="name">分类列表</field>
+            <field name="res_model">todo.category</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="target">current</field>
+        </record>
+
+        <record id="action_todo_permit" model="ir.actions.act_window">
+            <field name="name">待办审批</field>
+            <field name="res_model">todo.task</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('request_permit','=',True)]</field>
+            <field name="target">current</field>
+        </record>
+
+        <record id="action_todo_security" model="ir.actions.act_window">
+            <field name="name">服务器动作权限</field>
+            <field name="res_model">ir.actions.server</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">list,form</field>
+            <field name="domain">[('model_id','=','todo.task')]</field>
+            <field name="target">current</field>
+        </record>
+
+        <record id="action_todo_rule" model="ir.actions.act_window">
+            <field name="name">权限设置</field>
+            <field name="res_model">res.groups</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('full_name','ilike','待办事项')]</field>
+            <field name="target">current</field>
+        </record>
+
+<!--        <record id="action_mark_todo_task_done" model="ir.actions.server">-->
+<!--            <field name="name">关闭所选待办</field>-->
+<!--            <field name="model_id" ref="model_todo_task"/>-->
+<!--            <field name="binding_model_id" ref="model_todo_task"/>-->
+<!--            <field name="state">code</field>-->
+<!--            <field name="code">records.action_cancel()</field>-->
+<!--        </record>-->
+
+        <record id="action_mark_todo_task_permit" model="ir.actions.server">
+            <field name="name">审核所选待办</field>
+            <field name="model_id" ref="model_todo_task"/>
+            <field name="binding_model_id" ref="model_todo_task"/>
+            <field name="state">code</field>
+            <field name="code">records.action_permitted()</field>
+        </record>
+
+        <report id="action_todo_task_sql_report"
+            string="待办报表"
+            model="todo.task.report"
+            report_type="qweb-html"
+            name="todo.report_todo_task_sql"
+        />
+
+        <report id="action_todo_task_report"
+                string="报表打印"
+                model="todo.task"
+                report_type="qweb-html"
+                name="todo.report_todo_task_template"
+        />
+
+        <menuitem action="action_todo_rule" id="submenu_todo_rule" name="权限设置" parent="menu_todo_submenu" sequence="20" groups="todo.group_todo_manager,todo.group_todo_coordinator"/>
+        <menuitem action="action_todo_task_sql_report" id="submenu_todo_report" name="待办报表" parent="menu_todo_submenu" sequence="18" groups="todo.group_todo_manager,todo.group_todo_coordinator"/>
+        <menuitem action="action_todo_permit" id="submenu_todo_permit" name="待办审批" parent="menu_todo_submenu" sequence="14" groups="todo.group_todo_manager,todo.group_todo_coordinator"/>
+        <menuitem action="action_todo_category" id="submenu_todo_category" name="待办分类" parent="menu_todo_submenu" sequence='12'/>
+        <menuitem action="action_todo_task" id="submenu_todo_task" name="我的待办" parent="menu_todo_submenu" sequence='10'/>
+    </data>
+</odoo>
