@@ -25,7 +25,7 @@
         'security/ir_rule.xml',
         'views/views.xml',
         'views/templates.xml',
-        'views/report.xml'
+        # 'reports/course_leave_report.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

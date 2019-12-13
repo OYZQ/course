@@ -1,0 +1,395 @@
+<odoo>
+  <data>
+<!-- tree视图 -->
+    <!-- 课程视图 -->
+    <record model="ir.ui.view" id="course_tree_view">
+        <field name="name">course.tree</field>
+        <field name="model">course.course</field>
+        <field name="arch" type="xml">
+            <tree string="Course Tree">
+                <field name="name"/>
+                <field name="description"/>
+                <field name="responsible_id"/>
+            </tree>
+        </field>
+    </record>
+    <!-- 学生信息视图 -->
+    <record id="view_ml_employee_tree" model="ir.ui.view">
+        <field name="name">人员信息列表</field>
+        <field name="model">course.employee</field>
+        <field name="arch" type="xml">
+            <tree string="学生信息">
+                <field name="name"/>
+                <field name="gender"/>
+                <field name="country_id"/>
+                <field name="mobile_phone"/>
+                <field name="work_email"/>
+            </tree>
+        </field>
+    </record>
+    <!-- 老师信息视图 -->
+    <record id="view_ml_teacher_tree" model="ir.ui.view">
+        <field name="name">老师信息列表</field>
+        <field name="model">course.teacher</field>
+        <field name="arch" type="xml">
+            <tree string="学生信息">
+                <field name="name"/>
+                <field name="gender"/>
+                <field name="country_id"/>
+                <field name="mobile_phone"/>
+                <field name="work_email"/>
+            </tree>
+        </field>
+    </record>
+    <!-- 主任信息视图 -->
+    <record id="view_ml_director_tree" model="ir.ui.view">
+        <field name="name">主任信息列表</field>
+        <field name="model">course.director</field>
+        <field name="arch" type="xml">
+            <tree string="学生信息">
+                <field name="name"/>
+                <field name="gender"/>
+                <field name="country_id"/>
+                <field name="mobile_phone"/>
+                <field name="work_email"/>
+            </tree>
+        </field>
+    </record>
+    <!-- 选课视图 -->
+    <record id="view_ml_choice_tree" model="ir.ui.view">
+        <field name="name">选课列表</field>
+        <field name="model">course.choice</field>
+        <field name="arch" type="xml">
+            <tree string="选课信息">
+                <field name="className"/>
+                <field name="name"/>
+                <field name="surplus"/>
+                <field name="info"/>
+            </tree>
+        </field>
+    </record>
+    <!-- 请假视图 -->
+    <record id="view_tree_course_leave" model="ir.ui.view">
+      <field name="name">请假单列表</field>
+      <field name="model">course.leave</field>
+      <field name="arch" type="xml">
+        <tree decoration-danger="permit_state=='refuse'"
+                decoration-success="permit_state=='permitted'"
+                decoration-info="permit_state=='nopermit'">
+            <field name="name"/>
+            <field name="subject"/>
+            <field name="startdate"/>
+            <field name="reason"/>
+            <field name="permit_state"/>
+            <field name="days"/>
+        </tree>
+      </field>
+    </record>
+
+<!-- form视图 -->
+    <!-- 课程form -->
+    <record model="ir.ui.view" id="course_form_view">
+        <field name="name">course.form</field>
+        <field name="model">course.course</field>
+        <field name="arch" type="xml">
+            <form string="Course Form">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="description"/>
+                        <field name="responsible_id"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <!-- 学生form -->
+    <record id="view_ml_employee_form" model="ir.ui.view">
+        <field name="name">人员信息表单</field>
+        <field name="model">course.employee</field>
+        <field name="arch" type="xml">
+            <form string="学生信息">
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name" placeholder="姓名" required="True" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="基本信息">
+                            <field name="gender" required="True"/>
+                            <field name="country_id"/>
+                            <field name="birthday"/>
+                        </group>
+                        <group string="工作信息">
+                            <field name="address"/>
+                            <field name="mobile_phone" widget="phone"/>
+                            <field name="work_email" widget="email"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <!-- 老师form -->
+    <record id="view_ml_teacher_form" model="ir.ui.view">
+        <field name="name">老师信息表单</field>
+        <field name="model">course.teacher</field>
+        <field name="arch" type="xml">
+            <form string="老师信息">
+                <sheet>
+                    <notebook>
+                        <page string="个人信息">
+                            <div class="oe_title">
+                                <label for="name" class="oe_edit_only"/>
+                                <h1>
+                                    <field name="name" placeholder="姓名" required="True" readonly="True"/>
+                                </h1>
+                            </div>
+                            <group>
+                                <group string="基本信息">
+                                    <field name="gender" required="True"/>
+                                    <field name="country_id"/>
+                                    <field name="birthday"/>
+                                </group>
+                                <group string="工作信息">
+                                    <field name="className" readonly="True"/>
+                                    <field name="address"/>
+                                    <field name="mobile_phone" widget="phone"/>
+                                    <field name="work_email" widget="email"/>
+                                </group>
+                            </group>
+                        </page>
+<!--                        <page string="学生信息">-->
+<!--                            <field name="subordinate_ids"/>-->
+<!--                        </page>-->
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <!-- 主任form -->
+    <record id="view_ml_director_form" model="ir.ui.view">
+        <field name="name">主任信息表单</field>
+        <field name="model">course.director</field>
+        <field name="arch" type="xml">
+            <form string="主任信息">
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name" placeholder="姓名" required="True" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="基本信息">
+                            <field name="gender" required="True"/>
+                            <field name="country_id"/>
+                            <field name="birthday"/>
+                        </group>
+                        <group string="工作信息">
+                            <field name="address"/>
+                            <field name="mobile_phone" widget="phone"/>
+                            <field name="work_email" widget="email"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <!-- 请假form -->
+    <record id="view_form_course_leave" model="ir.ui.view">
+      <field name="name">学生请假单</field>
+      <field name="model">course.leave</field>
+      <field name="arch" type="xml">
+        <form>
+            <header>
+                <button name="action_permitted" attrs="{'invisible':['|',('permit_state','!=','nopermit'),('request_permit','!=',True)]}" type="object" string="审核通过" confirm="确认通过审核？" groups="course.group_course_teacher,course.group_course_manager"/>
+                <button name="action_refuse" attrs="{'invisible':['|',('permit_state','!=','nopermit'),('permit_state','!=','permitted'),('request_permit','!=',True)]}" type="object" string="驳回申请" groups="course.group_course_teacher,course.group_course_manager"/>
+                <field name="permit_state" widget="statusbar" statubar_visible="refuse,nopermit,permitted" attrs="{'invisible':[('request_permit','!=',True)]}" class="oe_right" groups="course.group_course_teacher,course.group_course_manager"/>
+
+                <button name="action_review" attrs="{'invisible':[('request_state','!=','submit')]}" type="object" string="提交完成" confirm="确认提交？" groups="course.group_course_user"/>
+                <button name="action_submit" attrs="{'invisible':[('request_state','!=','review')]}" type="object" string="取消提交" groups="course.group_course_user"/>
+                <field name="request_state" widget="statusbar" statubar_visible="submit,review,permit" class="oe_right" groups="course.group_course_user"/>
+
+                <button name="action_arrange" attrs="{'invisible':['|',('task_state','!=','draft'),('request_state','=','review')]}" type="object" string="提交安排" groups="course.group_course_teacher,course.group_course_manager"/>
+                <button name="action_draft" attrs="{'invisible':['|',('task_state','!=','arrange'),('request_state','=','review')]}" type="object" string="撤回安排" groups="course.group_course_teacher,course.group_course_manager"/>
+                <field name="task_state" widget="statusbar" statubar_visible="draft,arrange,done,cancel" class="oe_right" attrs="{'invisible':[('request_permit','=',True)]}" groups="course.group_course_teacher,course.group_course_manager"/>
+            </header>
+          <sheet>
+            <group name="group_top" string="学生请假单">
+              <field name="name"  readonly="1"/>
+              <field name="subject" readonly='1'/>
+              <field name="teacheName"/>
+              <field name="days"/>
+              <field name="sumdays" readonly="1"/>
+              <field name="startdate"/>
+              <field name="reason"/>
+              <field name="request_permit" invisible="True"/>
+              <field name="get_permit" invisible="True"/>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+    <!--    graph视图显示定义-->
+    <record model="ir.ui.view" id="view_form_course_leave_graph_view">
+        <field name="name">course.leave.graph</field>
+        <field name="model">course.leave</field>
+        <field name="arch" type="xml">
+        <pivot>
+            <field name="subject" type="col" />
+            <field name="name" />
+            <field name="days" interval="week" />
+            <field name="get_permit" type="measure" />
+        </pivot>
+        </field>
+    </record>
+    <!-- 选课form -->
+    <record id="view_form_course_choice" model="ir.ui.view">
+      <field name="name">选课列表</field>
+      <field name="model">course.choice</field>
+      <field name="arch" type="xml">
+        <form>
+            <header>
+                 <button name="action_classname" type="object" string="提交" confirm="确认提交？"/>
+            </header>
+          <sheet>
+            <group name="group_top" string="选课列表">
+              <field name="className"/>
+              <field name="className2" attrs="{'required': [('leader_id','=', False)], 'readonly': [('leader_id','!=', False)]}"/>
+              <field name="leader_id"/>
+              <field name="name" readonly="1"/>
+              <field name="surplus" readonly="1"/>
+<!--              <field name="test"  widget="progressbar"/>-->
+              <field name="info" readonly="1"/>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+    <!-- res.users视图继承 -->
+    <record id="building_list_view" model="ir.ui.view">
+        <field name="name">building.list.view</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='access_rights']" position="after">
+                <page string="个人信息">
+                    <group>
+                        <field name="sumdays"/>
+                        <field name="classname"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+    <!-- 课程列表视图动作 -->
+    <act_window id="action_course_course"
+                   name="课程列表"
+                   res_model="course.course"
+                   view_mode="tree,form"/>
+    <!-- 学生请假单视图动作 -->
+    <act_window id="action_course_leave"
+               name="学生请假单"
+               res_model="course.leave"
+               view_mode="tree,form,graph" />
+    <!-- 选课列表视图动作 -->
+    <act_window id="action_course_choice"
+               name="选课列表"
+               res_model="course.choice"
+               view_mode="tree,form" />
+    <!-- 老师信息视图动作 -->
+    <act_window id="view_ml_teacher_action"
+               name="老师信息"
+               res_model="course.teacher"
+               view_mode="tree,form" />
+    <!-- 学生信息视图动作 -->
+    <record model="ir.actions.act_window" id="view_ml_employee_action">
+        <field name="name">学生信息</field>
+        <field name="res_model">course.employee</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_ml_employee_tree"/>
+    </record>
+    <!-- 主任信息视图动作 -->
+    <record model="ir.actions.act_window" id="view_ml_director_action">
+        <field name="name">主任信息</field>
+        <field name="res_model">course.director</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_ml_director_tree"/>
+    </record>
+    <!-- 课程设置视图动作-->
+    <record model="ir.actions.act_window" id="session_list_action">
+        <field name="name">课程设置</field>
+        <field name="res_model">course.session</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form,graph,kanban</field>
+    </record>
+    <!-- window action-Course窗口动作-->
+    <record model="ir.actions.act_window" id="course_list_action">
+        <field name="name">添加课程</field>
+        <field name="res_model">course.zcourse</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="arch" type="xml">
+            <p class="oe_view_nocontent_create">Create the first course</p>
+        </field>
+    </record>
+    <!-- 服务器动作 -->
+    <record id="action_course_security" model="ir.actions.act_window">
+        <field name="name">服务器动作权限</field>
+        <field name="res_model">ir.actions.server</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('model_id','=','course.leave')]</field>
+        <field name="target">current</field>
+    </record>
+    <record id="action_todo_rule" model="ir.actions.act_window">
+        <field name="name">权限设置</field>
+        <field name="res_model">course.leave</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('full_name','=','课程设置 / 老师吖')]</field>
+        <field name="target">current</field>
+    </record>
+    <record id="action_mark_course_leave_permit" model="ir.actions.server">
+        <field name="name">通过所选假条</field>
+        <field name="model_id" ref="model_course_leave"/>
+        <field name="binding_model_id" ref="model_course_leave"/>
+        <field name="state">code</field>
+        <field name="code">records.action_permitted()</field>
+    </record>
+    <record id="action_mark_course_leave_done" model="ir.actions.server">
+        <field name="name">驳回所选假条</field>
+        <field name="model_id" ref="model_course_leave"/>
+        <field name="binding_model_id" ref="model_course_leave"/>
+        <field name="state">code</field>
+        <field name="code">records.action_cancel()</field>
+    </record>
+    <!-- 顶级菜单 -->
+    <menuitem name="课程系统" id="menu_course"/>
+    <!-- 二级菜单 -->
+    <menuitem name="学生" id="menu_employee_student" parent="menu_course" sequence="10" groups="course.group_course_user"/>
+    <menuitem name="老师" id="menu_employee_teacher" parent="menu_course" sequence="20" groups="course.group_course_teacher"/>
+    <menuitem name="教导主任" id="menu_employee_director" parent="menu_course" sequence="30" groups="course.group_course_manager"/>
+    <!-- 三级菜单 -->
+    <!-- 学生 -->
+    <menuitem name="个人信息" id="menu_student_info" parent="menu_employee_student" action="view_ml_employee_action" sequence="10"/>
+    <menuitem name="在线请假" id="menu_student_leave" parent="menu_employee_student" action="action_course_leave" sequence="20"/>
+    <menuitem name="选课系统" id="menu_student_choice" parent="menu_employee_student" action="action_course_choice" sequence="30"/>
+    <!-- 老师 -->
+    <menuitem name="个人信息" id="menu_teacher_infotm" parent="menu_employee_teacher" action="view_ml_teacher_action" sequence="10"/>
+<!--    <menuitem name="学生信息" id="menu_teacher_infots" parent="menu_employee_teacher" action="view_ml_employee_action" sequence="20"/>-->
+    <menuitem name="假条审批" id="menu_teacher_leave" parent="menu_employee_teacher" action="action_course_leave" sequence="30"/>
+    <!-- 主任 -->
+    <menuitem name="个人信息" id="menu_director_infodm" parent="menu_employee_director" action="view_ml_director_action" sequence="10"/>
+    <menuitem name="学生信息" id="menu_director_infods" parent="menu_employee_director" action="view_ml_employee_action" sequence="30"/>
+    <menuitem name="老师信息" id="menu_director_infodt" parent="menu_employee_director" action="view_ml_teacher_action" sequence="20"/>
+    <menuitem name="假条审批" id="menu_director_correct" parent="menu_employee_director" action="action_course_leave" sequence="40"/>
+    <menuitem name="课程设置" id="menu_director_deploy" parent="menu_employee_director" sequence="50" action="session_list_action"/>
+    <menuitem name="发布课程" id="menu_director_list" parent="menu_employee_director" sequence="60" action="course_list_action"/>
+  </data>
+</odoo>

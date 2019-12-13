@@ -1,5 +1,5 @@
 <odoo>
-    <!--    添加课程视图表单-->
+    <!--    发布课程视图表单-->
     <record model="ir.ui.view" id="course_form_view">
         <field name="name">course.form</field>
         <field name="model">course.zcourse</field>
@@ -7,7 +7,7 @@
             <form string="添加课程">
                 <sheet>
                     <group>
-                        <field name="name"/>
+                        <field name="test"/>
                         <field name="description"/>
                     </group>
                 </sheet>
@@ -25,24 +25,7 @@
             </tree>
         </field>
     </record>
-
-    <!-- window action-Course窗口动作-->
-    <record model="ir.actions.act_window" id="course_list_action">
-        <field name="name">添加课程</field>
-        <field name="res_model">course.zcourse</field>
-        <field name="view_type">form</field>
-        <field name="view_mode">tree,form</field>
-        <field name="arch" type="xml">
-            <p class="oe_view_nocontent_create">Create the first course</p>
-        </field>
-    </record>
-
-
-    <!--主任-配置下子菜单-->
-    <menuitem id="courses_menu" name="课程管理" parent="menu_director_deploy" action="course_list_action"/>
-
-
-    <!-- 创建session表单视图显示-->
+    <!-- session form视图显示-->
     <record model="ir.ui.view" id="session_form_view">
         <field name="name">session.form</field>
         <field name="model">course.session</field>
@@ -50,10 +33,8 @@
             <form string="Session Form">
                 <sheet>
                     <group string="课程安排">
-                        <field name="course_id"/>
                         <field name="name"/>
-                        <field name="instructor_id"/>
-                        <field name="active"/>
+                        <field name="course_id"/>
                     </group>
                     <group string="课程设置">
                         <field name="start_date"/>
@@ -61,14 +42,12 @@
                         <field name="seats" readonly="1"/>
                         <field name="taken_seats" widget="progressbar"/>
                     </group>
-                    <label for="attendee_ids"/>
-                    <field name="attendee_ids"/>
+                    <field name="attendee_ids" readonly="True"/>
                 </sheet>
             </form>
         </field>
     </record>
-
-    <!-- session列表视图-->
+    <!-- session Tree视图-->
     <record model="ir.ui.view" id="session_tree_view">
         <field name="name">session.tree</field>
         <field name="model">course.session</field>
@@ -76,24 +55,11 @@
             <tree string="Session Tree">
                 <field name="name"/>
                 <field name="course_id"/>
-                <field name="instructor_id"/>
                 <field name="num"/>
                 <field name="taken_seats" widget="progressbar"/>
             </tree>
         </field>
     </record>
-
-    <!-- 日历视图显示 -->
-    <record model="ir.ui.view" id="session_calendar_view">
-        <field name="name">session.calendar</field>
-        <field name="model">course.session</field>
-        <field name="arch" type="xml">
-            <calendar string="Session Calendar" date_start="start_date" date_stop="end_date" color="instructor_id">
-                <field name="name"/>
-            </calendar>
-        </field>
-    </record>
-
     <!--    graph视图显示定义-->
     <record model="ir.ui.view" id="course_session_graph_view">
         <field name="name">course.session.graph</field>
@@ -156,13 +122,7 @@
         <field name="model_id" ref="model_course_session"/>
         <field name="bing_model_id" ref="model_course_session"/>
     </record>
-    <!-- session右边窗显示口定义-->
-    <record model="ir.actions.act_window" id="session_list_action">
-        <field name="name">课程设置</field>
-        <field name="res_model">course.session</field>
-        <field name="view_type">form</field>
-        <field name="view_mode">tree,form,calendar,graph,kanban</field>
-    </record>
+
     <!--主任-配置下-->
-    <menuitem id="session_menu" name="课程设置" parent="menu_director_deploy" action="session_list_action"/>
+<!--    <menuitem id="session_menu" name="课程设置" parent="menu_director_deploy" action="session_list_action"/>-->
 </odoo>

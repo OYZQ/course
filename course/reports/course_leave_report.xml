@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <report id="action_course_leave_report"
+            string="报表打印"
+            model="course.leave"
+            report_type="qweb-html"
+            name="course.report_course_leave_template"
+    />
+    <template id="report_course_leave_template">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                  <!-- Report header content -->
+                    <div class="container">
+                        <div class="row bg-primary">
+                            <div class="col-2">申请人</div>
+                            <div class="col-2">课程</div>
+                            <div class="col-2">天数</div>
+                            <div class="col-2">开始日期</div>
+                            <div class="col-2">截止日期</div>
+                            <div class="col-2">状态</div>
+                        </div>
+                    </div>
+                    <t t-foreach="docs" t-as="o">
+                        <!-- Report row content -->
+                        <div class="row" style="margin:5px;">
+                            <div class="col-2">
+                                <span t-field="o.name"/>
+                            </div>
+                            <div class="col-2">
+                                <span t-field="o.subject"/>
+                            </div>
+                            <div class="col-2">
+                                <span t-field="o.days"/>
+                            </div>
+                            <div class="col-2">
+                                <span t-field="o.startdate"/>
+                            </div>
+                            <div class="col-2">
+                                <span t-field="o.enddate"/>
+                            </div>
+                            <div class="col-2">
+                                <span t-field="o.permit_state"/>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>
